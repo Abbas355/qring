@@ -1,0 +1,13 @@
+const String healthTitle = 'Health';
+const String todaySection = "Today's Summary";
+const String activityTracking = 'Activity Tracking';
+const String activity = 'Activity';
+const String sleep = 'Sleep';
+const String heartRate = 'Heart Rate';
+const String sportRecord = 'Sport Record';
+const String thisWeekSection = 'This Week';
+const String avgDistance = 'Avg. Distance';
+const String avgSleep = 'Avg. Sleep';
+const String restingHR = 'Resting HR';
+const String goalRate = 'Goal Rate';
+const String wearRingMessage = 'Please wear a ring to know your activity';
