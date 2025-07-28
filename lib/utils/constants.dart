@@ -16,6 +16,9 @@ const Color waterbar = Color(0xff6182CB);
 const Color caloriebar = Color(0xffFF7345);
 const Color sportcardcolor = Color(0xffF9C9EE);
 const Color drawerclor = Color(0xff9CA2F6);
+const Color wakeUpColor = Color(0xffF6E19C);
+const Color heartratecolor = Color(0xffD01A39);
+const Color thirdbarcolor = Color(0xffFACE3F);
 
 
 

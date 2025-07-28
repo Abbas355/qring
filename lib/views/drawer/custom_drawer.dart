@@ -17,6 +17,7 @@ class CustomDrawer extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.5,
+
       decoration: BoxDecoration(
         color: constants.drawerclor,
         borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),

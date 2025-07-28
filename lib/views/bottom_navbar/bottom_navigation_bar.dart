@@ -31,66 +31,69 @@ class CustomBottomNavigationBar extends StatelessWidget {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Container(
-    decoration:  BoxDecoration(
-      borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 1,
-          spreadRadius: 2,
-          offset: Offset(0, -1), // Shadow from top
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
         ),
-      ],),
-    child: PhysicalModel(
-      color: Colors.white,
-      elevation: 8,
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTap,
-        selectedFontSize: 0,
-        unselectedFontSize: 0,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        items: [
-          BottomNavigationBarItem(
-            icon: _buildIcon(
-              assetPath: ImageAssets.navicon['navhome']!,
-              isSelected: currentIndex == 0,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(
-              assetPath: ImageAssets.navicon['navactivity']!,
-              isSelected: currentIndex == 1,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(
-              assetPath: ImageAssets.navicon['navsleep']!,
-              isSelected: currentIndex == 2,
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(
-              assetPath: ImageAssets.navicon['navprofile']!,
-              isSelected: currentIndex == 3,
-            ),
-            label: '',
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 1,
+            spreadRadius: 2,
+            offset: Offset(0, -1), // Shadow from top
           ),
         ],
       ),
-    ),
-  );
-}
-
+      child: PhysicalModel(
+        color: Colors.transparent,
+        elevation: 8,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: onTap,
+          selectedFontSize: 0,
+          unselectedFontSize: 0,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          items: [
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                assetPath: ImageAssets.navicon['navhome']!,
+                isSelected: currentIndex == 0,
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                assetPath: ImageAssets.navicon['navactivity']!,
+                isSelected: currentIndex == 1,
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                assetPath: ImageAssets.navicon['navsleep']!,
+                isSelected: currentIndex == 2,
+              ),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                assetPath: ImageAssets.navicon['navprofile']!,
+                isSelected: currentIndex == 3,
+              ),
+              label: '',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

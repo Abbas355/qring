@@ -1,80 +1,128 @@
 import 'package:flutter/material.dart';
+import 'package:qring/utils/constants.dart' as constants;
 
-class ActivityScreen extends StatefulWidget {
+class Calender extends StatefulWidget {
+  const Calender({super.key});
+
   @override
-  _ActivityScreenState createState() => _ActivityScreenState();
+  State<Calender> createState() => _CalenderState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen> {
-  DateTime selectedDate = DateTime(2025, 9, 18); // Default selected date
+class _CalenderState extends State<Calender> {
+  DateTime selectedDate = DateTime.now();
+
+  List<DateTime> getCurrentWeekDates(DateTime date) {
+    // Start from Monday
+    final int weekday = date.weekday;
+    final monday = date.subtract(Duration(days: weekday - 1));
+    return List.generate(7, (index) => monday.add(Duration(days: index)));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Activity',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 16),
-          OutlinedButton(
-            onPressed: () async {
-              final DateTime? picked = await showDatePicker(
-                context: context,
-                initialDate: selectedDate,
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2030),
-              );
-              if (picked != null && picked != selectedDate) {
-                setState(() {
-                  selectedDate = picked;
-                });
-              }
-            },
-            child: Text(
-              '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
-              style: TextStyle(fontSize: 16),
-            ),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: Colors.grey),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-          ),
-          SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              for (var day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day)
-                          .add(Duration(days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(day)));
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: selectedDate.weekday - 1 == ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(day)
-                          ? Colors.blue[200]
-                          : null,
-                      borderRadius: BorderRadius.circular(4),
+    final weekDates = getCurrentWeekDates(selectedDate);
+
+    return Column(
+      children: [
+        // Tappable Row to open date picker
+        GestureDetector(
+          onTap: () async {
+            DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: selectedDate,
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+              builder: (context, child) {
+                return Theme(
+                  data: Theme.of(context).copyWith(
+                    colorScheme: ColorScheme.light(
+                      primary: constants.drawerclor,
+                      onPrimary: Colors.white,
+                      onSurface: Colors.black,
                     ),
-                    child: Text(
-                      day,
-                      style: TextStyle(fontSize: 16),
+                    textButtonTheme: TextButtonThemeData(
+                      style: TextButton.styleFrom(
+                        foregroundColor: constants.drawerclor,
+                      ),
                     ),
                   ),
-                ),
+                  child: child!,
+                );
+              },
+            );
+
+            if (pickedDate != null) {
+              setState(() {
+                selectedDate = pickedDate;
+              });
+            }
+          },
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_today_outlined),
+              const SizedBox(width: 8),
+              Text(
+                '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
+                style: const TextStyle(fontSize: 16),
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+
+        const SizedBox(height: 16),
+
+        // Weekday Labels
+        Container(
+          color: constants.drawerclor.withAlpha(100),
+          height: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              Text('Mon', style: TextStyle(fontSize: 16)),
+              Text('Tue', style: TextStyle(fontSize: 16)),
+              Text('Wed', style: TextStyle(fontSize: 16)),
+              Text('Thu', style: TextStyle(fontSize: 16)),
+              Text('Fri', style: TextStyle(fontSize: 16)),
+              Text('Sat', style: TextStyle(fontSize: 16)),
+              Text('Sun', style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        // Week Date Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: weekDates.map((date) {
+            bool isSelected = date.day == selectedDate.day &&
+                date.month == selectedDate.month &&
+                date.year == selectedDate.year;
+
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedDate = date;
+                });
+              },
+              child: Container(
+                height: 30,
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? constants.drawerclor : null,
+                ),
+                child: Center(
+                  child: Text(
+                    date.day.toString(),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }

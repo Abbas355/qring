@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../controllers/health_controller.dart';
-import '../../utils/constants.dart' as constants;
-import '../../utils/strings.dart' as strings;
+import '../../../controllers/health_controller.dart';
+import '../../../utils/constants.dart' as constants;
+import '../../../utils/strings.dart' as strings;
 import 'health_card.dart';
 
 class WeeklySummary extends StatelessWidget {
@@ -20,8 +20,13 @@ class WeeklySummary extends StatelessWidget {
       decoration: BoxDecoration(
         color: constants.cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: constants.borderColor),
-      ),
+        boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withAlpha(100),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+      ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

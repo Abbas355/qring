@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:qring/utils/image_assets.dart';
 import 'package:qring/views/bottom_navbar/bottom_navigation_bar.dart';
 import 'package:qring/views/drawer/custom_drawer.dart';
-import '../controllers/health_controller.dart';
-import '../utils/constants.dart' as constants;
-import '../utils/strings.dart' as strings;
+import '../../controllers/health_controller.dart';
+import '../../utils/constants.dart' as constants;
+import '../../utils/strings.dart' as strings;
 import 'widgets/today_summary.dart';
 import 'widgets/activity_tracking.dart';
 import 'widgets/weekly_summary.dart';
- // make sure this is imported
+// make sure this is imported
 
 class HealthScreen extends StatefulWidget {
-  const HealthScreen({super.key});
+  final VoidCallback? goToActivityTab; // Callback to trigger tab change
+  final VoidCallback? goToSleepTab; // Callback to trigger tab change
+
+  const HealthScreen({super.key, this.goToActivityTab,this.goToSleepTab});
 
   @override
   State<HealthScreen> createState() => _HealthScreenState();
@@ -20,7 +24,7 @@ class _HealthScreenState extends State<HealthScreen> {
   final HealthController _controller = HealthController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _currentIndex = 1; // 👈 Add this line for bottom nav index
+  // 👈 Add this line for bottom nav index
 
   @override
   void initState() {
@@ -42,40 +46,51 @@ class _HealthScreenState extends State<HealthScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       key: _scaffoldKey,
       drawer: CustomDrawer(onClose: () => Navigator.of(context).pop()),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: _onNavTap,
-      // ),
+      appBar: AppBar(
+        backgroundColor: constants.cardColor,
+        foregroundColor: constants.cardColor,
+        surfaceTintColor: constants.cardColor,
+        title: Text('Health',style: TextStyle(color: Colors.black),),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.all( 15.0),
+          child: GestureDetector(
+            onTap: (){ _scaffoldKey.currentState?.openDrawer();},
+            child: Container(
+             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: constants.drawerclor,),
+              
+              child: Image.asset(
+                height: 10,
+                // fit: BoxFit.contain,
+                // width: 10,
+                ImageAssets.icons['drawer']!,
+              ),
+            ),
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(size.width * 0.04),
+            padding: EdgeInsets.symmetric(horizontal:size.width * 0.04),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        _scaffoldKey.currentState?.openDrawer();
-                      },
-                    ),
-                    SizedBox(width: size.width * 0.2),
-                    Text(strings.healthTitle, style: constants.headerStyle),
-                    const Spacer(flex: 2),
-                  ],
-                ),
+              
                 SizedBox(height: size.height * 0.02),
                 TodaySummary(controller: _controller),
                 SizedBox(height: size.height * 0.03),
-                ActivityTracker(),
+                ActivityTracker(goToActivityTab: widget.goToActivityTab,goToSleepTab: widget.goToSleepTab,),
                 SizedBox(height: size.height * 0.01),
                 Text(strings.thisWeekSection, style: constants.subHeaderStyle),
                 SizedBox(height: size.height * 0.01),
                 WeeklySummary(controller: _controller),
+                SizedBox(height: size.height * 0.02),
               ],
             ),
           ),

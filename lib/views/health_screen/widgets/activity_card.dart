@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/image_assets.dart'; // Import this where icons map is defined
+import '../../../utils/image_assets.dart'; // Import this where icons map is defined
 
 class ActivityCard extends StatelessWidget {
   final String label;
@@ -26,7 +26,7 @@ class ActivityCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.08),
+              color: Colors.grey.withAlpha(100),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/weekly_activity_model.dart';
+import '../../../models/weekly_activity_model.dart';
 
 class HealthCard extends StatelessWidget {
   final String title;
@@ -29,7 +29,7 @@ class HealthCard extends StatelessWidget {
           children: [
             Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 6),
-            Text(title, style: const TextStyle(fontSize: 13, color: Colors.black87)),
+            Text(title, style:  TextStyle(fontSize: 14, color: Colors.black87,fontWeight: FontWeight.w100)),
           ],
         ),
       ),
