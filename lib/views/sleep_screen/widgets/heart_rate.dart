@@ -5,10 +5,10 @@ import 'package:qring/utils/constants.dart' as constants;
 class HeartRateChartWidget extends StatelessWidget {
   String title;
 
-  HeartRateChartWidget({super.key,required this.title});
+  HeartRateChartWidget({super.key, required this.title});
   @override
   Widget build(BuildContext context) {
-  final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,7 +31,7 @@ class HeartRateChartWidget extends StatelessWidget {
         ),
         Divider(color: Colors.black.withAlpha(50), thickness: 1),
 
-        SizedBox(height: size.height*0.015),
+        SizedBox(height: size.height * 0.015),
         Container(
           height: 150,
           child: LineChart(
@@ -136,7 +136,10 @@ class HeartRateChartWidget extends StatelessWidget {
                 show: true,
                 border: Border(
                   left: BorderSide(color: Colors.black.withAlpha(30), width: 4),
-                  bottom: BorderSide(color: Colors.black.withAlpha(30), width: 4),
+                  bottom: BorderSide(
+                    color: Colors.black.withAlpha(30),
+                    width: 4,
+                  ),
                 ),
               ),
               minX: 0,
@@ -147,22 +150,32 @@ class HeartRateChartWidget extends StatelessWidget {
                 LineChartBarData(
                   spots: [
                     FlSpot(0, 80), // 00:00
-                    FlSpot(2, 90), // 06:00
-                    FlSpot(3, 70), // 12:00
-                    FlSpot(4, 120), // 18:00
-                    FlSpot(5, 60), // 23:59
+                    FlSpot(0.5, 80), // 06:00
+                    FlSpot(1, 80), // 12:00
+                    FlSpot(1, 80), // 12:00
+                    FlSpot(1.5, 100), // 18:00
+                    FlSpot(2, 80), // 23:59
+                    FlSpot(2.5, 60), // 23:59
+                    FlSpot(3, 80), // 23:59
+                    FlSpot(3.5, 80), // 23:59
+                    FlSpot(4, 80), // 23:59
+                    FlSpot(4.5, 120), // 23:59
+                    FlSpot(5, 80), // 23:59
+                    FlSpot(5.5, 80), // 23:59
                     FlSpot(6, 80), // 23:59
-                    FlSpot(7, 80), // 23:59
-                    FlSpot(8, 100), // 23:59
-                    FlSpot(9, 50), // 23:59
-                    FlSpot(10, 75), // 23:59
-                    FlSpot(11, 85), // 23:59
-                    FlSpot(12, 80), // 23:59
                   ],
                   isCurved: false,
                   color: constants.heartratecolor,
-                  barWidth: 2,
-                  dotData: FlDotData(show: false),
+                  barWidth: 3,
+                  dotData: FlDotData(
+                    show: true,
+                    checkToShowDot: (FlSpot spot, LineChartBarData barData) {
+                      final spots = barData.spots;
+                      // Show dot only at first and last spot
+                      return spot == spots.first || spot == spots.last;
+                    },
+                    // You can use constants.heartratecolor if you prefer
+                  ),
                 ),
               ],
               lineTouchData: LineTouchData(enabled: false),

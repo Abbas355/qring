@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 
 class StepsGraphWidget extends StatefulWidget {
   final Color barcolor;
+  final String unit;
 
-  const StepsGraphWidget({super.key, required this.barcolor});
+  const StepsGraphWidget({
+    super.key,
+    required this.barcolor,
+    required this.unit,
+  });
 
   @override
   State<StepsGraphWidget> createState() => _StepsGraphWidgetState();
@@ -18,9 +23,9 @@ class _StepsGraphWidgetState extends State<StepsGraphWidget>
   final List<FlSpot> fullSpots = const [
     FlSpot(0.5, 0.1),
     FlSpot(1, 0.5),
-    FlSpot(2, 0.6),
-    FlSpot(3, 0.8),
-    FlSpot(4, 0.4),
+    FlSpot(1.5, 0.6),
+    FlSpot(2, 0.8),
+    FlSpot(2.5, 0.4),
   ];
 
   @override
@@ -32,9 +37,10 @@ class _StepsGraphWidgetState extends State<StepsGraphWidget>
       duration: const Duration(seconds: 3),
     );
 
-    _animation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.linear),
-    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
 
     _controller.forward();
   }
@@ -46,7 +52,9 @@ class _StepsGraphWidgetState extends State<StepsGraphWidget>
   }
 
   List<FlSpot> getInterpolatedSpots(double progress) {
-    int count = (progress * fullSpots.length).clamp(0, fullSpots.length).floor();
+    int count = (progress * fullSpots.length)
+        .clamp(0, fullSpots.length)
+        .floor();
     if (count == 0) return [];
     return fullSpots.sublist(0, count);
   }
@@ -54,7 +62,6 @@ class _StepsGraphWidgetState extends State<StepsGraphWidget>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Container(
       width: size.width,
       decoration: BoxDecoration(
@@ -70,12 +77,13 @@ class _StepsGraphWidgetState extends State<StepsGraphWidget>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 200,
+              height: size.height * 0.2,
+              width: size.width * 0.8,
               child: AnimatedBuilder(
                 animation: _animation,
                 builder: (context, child) {
@@ -119,8 +127,9 @@ class _StepsGraphWidgetState extends State<StepsGraphWidget>
                           sideTitles: SideTitles(
                             showTitles: true,
                             interval: 0.3,
+                            reservedSize: 30,
                             getTitlesWidget: (value, _) => Text(
-                              '${value.toStringAsFixed(1)}',
+                              '${value.toStringAsFixed(1)} ${widget.unit}',
                               style: const TextStyle(fontSize: 10),
                             ),
                           ),

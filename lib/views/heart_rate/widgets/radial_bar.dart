@@ -59,11 +59,11 @@ class NestedCirclesCard extends StatelessWidget {
 
   // Default colors are used when an item's color is null.
   final List<Color> _defaultColors = [
-    Colors.blue,
-    Colors.orange,
-    Colors.yellow,
-    Colors.green,
-    Colors.green,
+    constants.heartratecolor,
+    constants.caloriebar,
+    constants.thirdbarcolor,
+    constants.stepsbar,
+    constants.waterbar,
   ];
 
   NestedCirclesCard({super.key, required this.items})
@@ -223,7 +223,7 @@ class _ConcentricArcsPainter extends CustomPainter {
       final rect = Rect.fromCircle(center: center, radius: radius);
 
       final backgroundPaint = Paint()
-        ..color = color.withOpacity(0.2)
+        ..color = color.withOpacity(0.0)
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth
         ..strokeCap = StrokeCap.round;

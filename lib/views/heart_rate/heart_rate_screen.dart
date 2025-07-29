@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:qring/utils/constants.dart' as constants;
 import 'package:qring/utils/image_assets.dart';
 import 'package:qring/views/heart_rate/widgets/custom_container.dart';
@@ -17,27 +18,33 @@ class HeartRateScreen extends StatefulWidget {
 class _HeartRateScreenState extends State<HeartRateScreen> {
   DateTime _selectedDate = DateTime(2025, 07, 18); // Default date from image
   bool _isDetectionOn = false; // Default toggle state
+  DateTime selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final formattedTime = DateFormat('hh:mm').format(now);
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      
       backgroundColor: constants.cardColor,
       appBar: AppBar(
         backgroundColor: constants.cardColor,
         foregroundColor: constants.cardColor,
         surfaceTintColor: constants.cardColor,
-        title: Text('Heart Rate',style: TextStyle(color: Colors.black),),
+        title: Text('Heart Rate', style: TextStyle(color: Colors.black)),
+
         // elevation: 0,
-        
         automaticallyImplyLeading: false,
         leading: Padding(
-          padding: const EdgeInsets.all( 15.0),
+          padding: const EdgeInsets.all(15.0),
           child: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
-             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),color: constants.drawerclor,),
-              
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: constants.drawerclor,
+              ),
+
               child: Image.asset(
                 height: 10,
                 // fit: BoxFit.contain,
@@ -62,19 +69,56 @@ class _HeartRateScreenState extends State<HeartRateScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.calendar_today_outlined, color: Colors.black),
-                  SizedBox(width: 5),
-                  Text(
-                    '24-07-2025',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: constants.drawerclor,
+                                onPrimary: Colors.white,
+                                onSurface: Colors.black,
+                              ),
+                              textButtonTheme: TextButtonThemeData(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: constants.drawerclor,
+                                ),
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
+
+                      if (pickedDate != null) {
+                        setState(() {
+                          selectedDate = pickedDate;
+                        });
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.calendar_today_outlined),
+                        const SizedBox(width: 8),
+                        Text(
+                          '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   Text(
-                    '04:03 PM', // Current time
+                    formattedTime, // Current time
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900,
+                      color: constants.drawerclor,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -154,13 +198,19 @@ class _HeartRateScreenState extends State<HeartRateScreen> {
                 ],
               ),
               SizedBox(height: 20),
-              NestedCirclesCard( items: [
+              NestedCirclesCard(
+                items: [
                   NestedCircleItem(label: 'Limit', value: 0.9, unit: 'min'),
-                  NestedCircleItem(label: 'Anaerobic', value: 0.65, unit: 'min'),
+                  NestedCircleItem(
+                    label: 'Anaerobic',
+                    value: 0.65,
+                    unit: 'min',
+                  ),
                   NestedCircleItem(label: 'Aerobic', value: 0.75, unit: 'min'),
                   NestedCircleItem(label: 'Fat Burn', value: 0.4, unit: 'min'),
-                  NestedCircleItem(label: 'Warm Up', value: 1.0, unit: 'min'),
-                ],)
+                  NestedCircleItem(label: 'Warm Up', value: 0.67, unit: 'min'),
+                ],
+              ),
             ],
           ),
         ),

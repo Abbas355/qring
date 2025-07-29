@@ -132,7 +132,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         color: constants.caloriebar,
                       ),
                     ),
-                    StepsGraphWidget(barcolor: constants.caloriebar),
+                    StepsGraphWidget(barcolor: constants.caloriebar,unit: 'K',),
                     SizedBox(height: 20),
                     Text(
                       "Milage",
@@ -142,7 +142,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         color: constants.stepsbar,
                       ),
                     ),
-                    StepsGraphWidget(barcolor: constants.stepsbar),
+                    StepsGraphWidget(barcolor: constants.stepsbar,unit: 'km',),
                     SizedBox(height: 20),
                     Text(
                       "Calories",
@@ -152,7 +152,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                         color: constants.caloriesprogresscolor,
                       ),
                     ),
-                    StepsGraphWidget(barcolor: constants.caloriesprogresscolor),
+                    StepsGraphWidget(barcolor: constants.caloriesprogresscolor,unit: 'K',),
                   ],
                 ),
               ],
